@@ -38,17 +38,17 @@ module.exports = function(grunt) {
 						    request(shared_flow_download_url).auth(userid, passwd, true)
 							  .pipe(fs.createWriteStream(filepath + "/" + shared_flow_detail.name + '.zip'))
 							  .on('close', function () {
+                                done_count++;
+                                if (done_count == shared_flows.length)
+                                {
+                                    grunt.log.ok('Exported ' + done_count + ' shared flows.');
+                                    done();
+                                }
 							  });
 						}
 						else
 						{
 							grunt.log.error(error);
-						}
-						done_count++;
-						if (done_count == shared_flows.length)
-						{
-							grunt.log.ok('Exported ' + done_count + ' shared flows.');
-							done();
 						}
 					}).auth(userid, passwd, true);
 			    	// End shared flow details
