@@ -40,18 +40,17 @@ module.exports = function(grunt) {
 						    request(proxy_download_url).auth(userid, passwd, true)
 							  .pipe(fs.createWriteStream(filepath + "/" + proxy_detail.name + '.zip'))
 							  .on('close', function () {
-							    //grunt.verbose.writeln('Proxy File written!');
+									done_count++;
+									if (done_count == proxies.length)
+									{
+										grunt.log.ok('Exported ' + done_count + ' proxies.');
+										done();
+									}
 							  });
 						}
 						else
 						{
 							grunt.log.error(error);
-						}
-						done_count++;
-						if (done_count == proxies.length)
-						{
-							grunt.log.ok('Exported ' + done_count + ' proxies.');
-							done();
 						}
 					}).auth(userid, passwd, true);
 			    	// End proxy details
